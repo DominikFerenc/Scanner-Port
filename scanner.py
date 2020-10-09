@@ -12,7 +12,7 @@ class LocalScanner:
         for i in range(50, 500):
             connection = newSocket.connect_ex(((ip_to_host, i)))
             if (connection == 0):
-                print('Port %d: Open' %(i,))
+                print('Port %d: Open' % i)
         newSocket.close()
 
 
