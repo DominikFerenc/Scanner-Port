@@ -1,9 +1,8 @@
 from socket import *
 
-
 class LocalScanner:
     def getHostToscanned(self):
-        host = input("Enter to host to scanned: ")
+        host = input("\nEnter to host to scanned: ")
         return gethostbyname(host)
 
     def getLowestPort(self):
@@ -24,29 +23,30 @@ class LocalScanner:
         lowest_port = self.getLowestPort()
         maximum_port = self.getMaximumPort()
         self.startingScan(ip_to_host, lowest_port, maximum_port)
+        try:
+            for port in range(lowest_port, maximum_port):
 
-        for port in range(lowest_port, maximum_port):
-            newSocket = socket(AF_INET, SOCK_STREAM)
-            connection = newSocket.connect_ex(((ip_to_host, port)))
-            if (connection == 0):
-                self.showOpenPorts(port)
-            newSocket.close()
-
-
+                newSocket = socket(AF_INET, SOCK_STREAM)
+                connection = newSocket.connect_ex(((ip_to_host, port)))
+                newSocket.settimeout(5)
+                if connection == 0:
+                    self.showOpenPorts(port)
+                #else:
+                    #print("Port %d isn't open" % port)
+                if port == maximum_port - 1:
+                    print("\033[32mDONE!\033[0m\n")
+                newSocket.close()
+        except (KeyboardInterrupt, SystemExit):
+            print("\n\033[31mThe key combination CTRL+C is pressed.\033[0m")
 
 #class Data:
     #def getAvailablePorts(self):
     #def presentationData(self):
 
-
-
-
 def main():
     sc = LocalScanner()
-    try:
-        sc.setSocket()
-    except (KeyboardInterrupt, SystemExit):
-        print("\n\033[31mThe key combination CTRL+C is pressed.\033[0m")
+    sc.setSocket()
+
 
 if __name__ == "__main__":
     main()
